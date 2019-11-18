@@ -40,4 +40,4 @@
 4. Detetar colisões
 5. verificar se jogador chegou ao fim do nível
 
-\<date\>
+\<18/11/2019\>
