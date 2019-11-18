@@ -1,17 +1,17 @@
-# Projeto \<Kong Fu\>
+# Projeto Kong Fu
 ### FPRO/MIEIC, 2019/20
-### \<João Gil Marinho Mesquita up201906682\>
-### \<1MIEIC03\> 
+### João Gil Marinho Mesquita (up201906682)
+### 1MIEIC03
 
 #### Objetivo
 
-1. \<Criar um clone do clássico Kong Fu em pygame\>
+1. Criar um clone do clássico Kong Fu em pygame
 
-2. \<Em alternativa... do clássico x em Pygame\>
+2. Em alternativa... do clássico x em Pygame
 
 #### Repositório de código
 
-1) Link para o repositório do GitHub: \<https://github.com/fpro-feup/public\>
+1) Link para o repositório do GitHub: https://github.com/fpro-feup/public
 
 2) Adicionar o prof. da Unidade (ver lista em baixo) e o "Lord of the Game" (aka Ricardo Cruz):
 
@@ -22,7 +22,7 @@
 
 #### Descrição
 
-\<The player takes the role of Keiji Thomas, a man in a Keikogi and slippers. Thomas's girlfriend, Sylvia, has been kidnapped by "Mr. X", and Thomas must fight through five side-scrolling floors full of enemies to rescue her.\>
+The player takes the role of Keiji Thomas, a man in a Keikogi and slippers. Thomas's girlfriend, Sylvia, has been kidnapped by "Mr. X", and Thomas must fight through five side-scrolling floors full of enemies to rescue her.
 
 #### UI
 
@@ -40,4 +40,4 @@
 4. Detetar colisões
 5. verificar se jogador chegou ao fim do nível
 
-\<18/11/2019\>
+#### 18/11/2019
