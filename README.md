@@ -22,13 +22,11 @@
 
 #### Descrição
 
-\<É um jogo de puzzle em que o objetivo do jogo é empurrar caixotes para um sítio indicado. 
-Para empurrar o caixote é preciso ir ao outro lado empurrá-lo. 
-Ou seja, se ele ficar junto à parede, a pessoa precisa de reiniciar o jogo. Estamos a utilizar os níveis do XSokoban.\>
+\<The player takes the role of Keiji Thomas, a man in a Keikogi and slippers. Thomas's girlfriend, Sylvia, has been kidnapped by "Mr. X", and Thomas must fight through five side-scrolling floors full of enemies to rescue her.\>
 
 #### UI
 
-![UI](https://github.com/fpro-feup/public/blob/master/assigns/ui.png)
+![UI](https://github.com/monkin77/Kongfu/blob/master/UI.png)
 
 ### Pacotes
 
@@ -37,8 +35,9 @@ Ou seja, se ele ficar junto à parede, a pessoa precisa de reiniciar o jogo. Est
 #### Tarefas
 
 1. carregar os níveis
-1. desenhar a matriz do nível
-1. ler teclas e mover as peças
-2. verificar se jogador chegou ao fim do nível
+2. desenhar a matriz do nível
+3. ler teclas e mover as peças
+4. Detetar colisões
+5. verificar se jogador chegou ao fim do nível
 
 \<date\>
