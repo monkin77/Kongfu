@@ -7,24 +7,24 @@ def events():
             pygame.quit()
             sys.exit()
 
-#defien display surface
-W,H = 1920, 1080
+#define display surface
+W,H = 960, 540
 HW,HH = W/2, H/2
 AREA = W*H
 
 #INITIALIZE DISPLAY
 pygame.init()
 CLOCK = pygame.time.Clock()
-DS = pygame.display.set_mode((W,H))
+win = pygame.display.set_mode((W,H))
 pygame.display.set_caption("Kong Fu")
-FPS = 1
+FPS = 6
 
 #Define colors
 BLACK = (0,0,0,255)
 WHITE = (255,255,255,255)
 GREEN = (0,255,0,0)
 
-
+#LOADING SPRITES
 
 class spritesheet:
     def __init__(self, filename,cols,rows):
@@ -45,11 +45,39 @@ class spritesheet:
         surface.blit(self.sheet, (x+self.handle[handle][0], y+ self.handle[handle][1]), self.cells[cellIndex])
 
 index = 0
-while True:
+
+class player(object):
+    def __init__(self,x,y,width,height):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.vel = 5
+        self.left = False
+        self.right = False
+        self.standing = True
+        self.walkCount = 0
+        self.isJump = False
+        self.jumpCount = 10
+        self.hitbox = (self.x+17,self.y+11,40,40)
+    #def draw(self,win):
+        
+
+
+def redrawGameWindow():
+    win.fill(GREEN)
     events()
-    DS.fill(GREEN)
-    s = spritesheet("zelda_standing.png", 1,1)
-    s.draw(DS, index%s.totalCellCount, HW,HH, 4)  #Center handle = 4
+    pygame.display.update()
+
+#main loop
+
+run = True
+
+while run:
+    redrawGameWindow()
+    s = spritesheet("zelda_Lwalk2.png", 6,1)
+    s.draw(win, index%s.totalCellCount, HW,400, 4)  #Center handle = 4
     index += 1
     pygame.display.update()
     CLOCK.tick(FPS)
+    redrawGameWindow()
