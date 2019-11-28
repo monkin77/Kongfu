@@ -1,14 +1,8 @@
 import pygame
 import math, random, sys
 
-def events():
-    for event in pygame.event.get():
-        if event.type == "QUIT" or (event.type == "KEYDOWN" and event.key == "K_ESCAPE"):
-            pygame.quit()
-            sys.exit()
-
 #define display surface
-W,H = 960, 540
+W,H = 960,720
 HW,HH = W/2, H/2
 AREA = W*H
 
@@ -17,7 +11,7 @@ pygame.init()
 CLOCK = pygame.time.Clock()
 win = pygame.display.set_mode((W,H))
 pygame.display.set_caption("Kong Fu")
-FPS = 6
+FPS = 30
 
 #Define colors
 BLACK = (0,0,0,255)
@@ -44,6 +38,13 @@ class spritesheet:
     def draw(self, surface, cellIndex, x, y, handle = 0):
         surface.blit(self.sheet, (x+self.handle[handle][0], y+ self.handle[handle][1]), self.cells[cellIndex])
 
+walkRight = spritesheet("zelda_Rwalk2.png",6,1)
+walkLeft = spritesheet("zelda_Lwalk2.png",6,1)
+standing = spritesheet("zelda_standing.png",1,1)
+background = pygame.image.load("dojo2.png")
+
+
+
 index = 0
 
 class player(object):
@@ -60,24 +61,73 @@ class player(object):
         self.isJump = False
         self.jumpCount = 10
         self.hitbox = (self.x+17,self.y+11,40,40)
-    #def draw(self,win):
-        
+    def draw(self,win):
+        if self.walkCount +1 >= 30:
+            self.walkCount = 0
+        if not(self.standing):
+            if self.left:
+                #win.blit(walkLeft[self.walkCount // 5], (self.x,self.y))
+                walkLeft.draw(win, self.walkCount//5, self.x,self.y, 4)  #Center handle = 4
+                self.walkCount += 1
+            elif self.right:
+                #win.blit(walkRight[self.walkCount //5], (self.x,self.y))
+                walkRight.draw(win, self.walkCount//5, self.x,self.y, 4)
+                self.walkCount += 1
+        else:
+            if self.right:
+                #win.blit(walkRight[0],(self.x,self.y))
+                walkRight.draw(win, 0, self.x,self.y, 4)
+            elif self.left:
+                #win.blit(walkLeft[5], (self.x,self.y))
+                walkLeft.draw(win, 5, self.x,self.y, 4)
+            else:
+                #win.blit(standing, (self.x,self.y))
+                standing.draw(win, 0, self.x,self.y, 4)
 
 
 def redrawGameWindow():
-    win.fill(GREEN)
-    events()
+    global walkCount
+    win.blit(background,(0,0))
+    man.draw(win)
     pygame.display.update()
 
 #main loop
+man = player(300,410,64,64)
+
+
+
 
 run = True
 
 while run:
-    redrawGameWindow()
-    s = spritesheet("zelda_Lwalk2.png", 6,1)
-    s.draw(win, index%s.totalCellCount, HW,400, 4)  #Center handle = 4
-    index += 1
-    pygame.display.update()
     CLOCK.tick(FPS)
+    redrawGameWindow()
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            run = False
+
+    keys = pygame.key.get_pressed()
+    
+    if keys[pygame.K_LEFT] and man.x >=man.vel: #It has to be greater or equal to vel so it doesnt go out of the map
+        man.x -= man.vel
+        man.left = True
+        man.right = False
+        man.standing = False
+    elif keys[pygame.K_RIGHT] and man.x < W - man.width - man.vel: 
+        man.x += man.vel
+        man.left = False
+        man.right = True
+        man.standing = False
+    else:
+        man.standing = True
+        man.walkCount = 0
+
+
+
+    #redrawGameWindow()
+    #s = spritesheet("zelda_Lwalk2.png", 6,1)
+    #s.draw(win, index%s.totalCellCount, HW,400, 4)  #Center handle = 4
+    #index += 1
+    pygame.display.update()
     redrawGameWindow()
