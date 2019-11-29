@@ -38,10 +38,10 @@ class spritesheet:
     def draw(self, surface, cellIndex, x, y, handle = 0):
         surface.blit(self.sheet, (x+self.handle[handle][0], y+ self.handle[handle][1]), self.cells[cellIndex])
 
-walkRight = spritesheet("zelda_Rwalk2.png",6,1)
-walkLeft = spritesheet("zelda_Lwalk2.png",6,1)
-standing = spritesheet("zelda_standing.png",1,1)
-background = pygame.image.load("dojo2.png")
+walkRight = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Rwalk2b.png",6,1)
+walkLeft = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Lwalk2b.png",6,1)
+standing = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_standing2.png",1,1)
+background = pygame.image.load("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/wallpaper.gif")
 
 
 
@@ -85,15 +85,17 @@ class player(object):
                 standing.draw(win, 0, self.x,self.y, 4)
 
 
+
 def redrawGameWindow():
     global walkCount
-    win.blit(background,(0,0))
+    win.blit(background,(0,170))
+    pygame.draw.rect(win,(80,30,0), (0,0,W,170))
+    pygame.draw.rect(win,(80,30,0), (0,720-147,W,170))
     man.draw(win)
     pygame.display.update()
 
 #main loop
-man = player(300,410,64,64)
-
+man = player(300,500,100,150)
 
 
 
