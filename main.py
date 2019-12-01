@@ -46,7 +46,7 @@ l_punch = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/ze
 r_punch = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Rpunchb.png",1,1)
 l_bow = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Lbowb.png",4,1)
 r_bow = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Rbowb.png",4,1)       #corrigir as imagens
-
+#l_bow = [pygame.image.load("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Lbowb4.png"),pygame.image.load("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Lbowb3.png"),pygame.image.load("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Lbowb2.png"),pygame.image.load("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Lbowb1.png")]
 
 class player(object):
     def __init__(self,x,y,width,height):
@@ -70,7 +70,7 @@ class player(object):
     def draw(self,win):
         if self.walkCount +1 >= 30:
             self.walkCount = 0
-        if self.bowCount +1 >= 30:
+        if self.bowCount +1 >= 60:
             self.bowCount = 0
         #if self.punchCount +1 >= 30:
          #   self.punchCount = 0
@@ -106,10 +106,11 @@ class player(object):
         
         elif self.bow:
             if self.left:
-                l_bow.draw(win,int(self.bowCount//7.5),self.x,self.y,4)
+                l_bow.draw(win,int(self.bowCount//15),self.x,self.y,4)
+                #win.blit(l_bow[int(self.bowCount//15)],(self.x-62.5,self.y-60))
                 self.bowCount += 1
             elif self.right:
-                r_bow.draw(win,int(-self.bowCount//7.5),self.x,self.y,4)
+                r_bow.draw(win,int(-self.bowCount//15),self.x,self.y,4)
                 self.bowCount += 1
 
 
