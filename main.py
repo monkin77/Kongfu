@@ -39,13 +39,14 @@ class spritesheet:
         surface.blit(self.sheet, (x+self.handle[handle][0], y+ self.handle[handle][1]), self.cells[cellIndex])
 
 walkRight = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Rwalk2b.png",6,1)
-walkLeft = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Lwalk2b.png",6,1)
+walkLeft = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Lwalk2b.png",6,1)     #100 X 120 px
 standing = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_standing2.png",1,1)
 background = pygame.image.load("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/wallpaper.gif")
+l_punch = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Lpunchb.png",1,1)
+r_punch = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Rpunchb.png",1,1)
+l_bow = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Lbowb.png",4,1)
+r_bow = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Rbowb.png",4,1)       #corrigir as imagens
 
-
-
-index = 0
 
 class player(object):
     def __init__(self,x,y,width,height):
@@ -57,32 +58,59 @@ class player(object):
         self.left = False
         self.right = False
         self.standing = True
+        self.punch = False  #new
+        self.bow = False
+        self.bowCount = 0
         self.walkCount = 0
+        #self.punchCount = 0     #new
+        #self.kickCount = 0
         self.isJump = False
         self.jumpCount = 10
         self.hitbox = (self.x+17,self.y+11,40,40)
     def draw(self,win):
         if self.walkCount +1 >= 30:
             self.walkCount = 0
-        if not(self.standing):
-            if self.left:
-                #win.blit(walkLeft[self.walkCount // 5], (self.x,self.y))
-                walkLeft.draw(win, self.walkCount//5, self.x,self.y, 4)  #Center handle = 4
-                self.walkCount += 1
-            elif self.right:
-                #win.blit(walkRight[self.walkCount //5], (self.x,self.y))
-                walkRight.draw(win, self.walkCount//5, self.x,self.y, 4)
-                self.walkCount += 1
-        else:
-            if self.right:
-                #win.blit(walkRight[0],(self.x,self.y))
-                walkRight.draw(win, 0, self.x,self.y, 4)
-            elif self.left:
-                #win.blit(walkLeft[5], (self.x,self.y))
-                walkLeft.draw(win, 5, self.x,self.y, 4)
+        if self.bowCount +1 >= 30:
+            self.bowCount = 0
+        #if self.punchCount +1 >= 30:
+         #   self.punchCount = 0
+        
+        if not (self.punch) and not(self.bow):      #changes
+            if not(self.standing):
+                if self.left:
+                    #win.blit(walkLeft[self.walkCount // 5], (self.x,self.y))
+                    walkLeft.draw(win, self.walkCount//5, self.x,self.y, 4)  #Center handle = 4
+                    self.walkCount += 1
+                elif self.right:
+                    #win.blit(walkRight[self.walkCount //5], (self.x,self.y))
+                    walkRight.draw(win, self.walkCount//5, self.x,self.y, 4)
+                    self.walkCount += 1
             else:
-                #win.blit(standing, (self.x,self.y))
-                standing.draw(win, 0, self.x,self.y, 4)
+                if self.right:
+                    #win.blit(walkRight[0],(self.x,self.y))
+                    walkRight.draw(win, 0, self.x,self.y, 4)
+                elif self.left:
+                    #win.blit(walkLeft[5], (self.x,self.y))
+                    walkLeft.draw(win, 5, self.x,self.y, 4)
+                else:
+                    #win.blit(standing, (self.x,self.y))
+                    standing.draw(win, 0, self.x,self.y, 4)
+
+        elif self.punch:
+            if self.left:
+                l_punch.draw(win,0,self.x,self.y,4)
+                #self.punch += 1
+            elif self.right:
+                r_punch.draw(win,0,self.x,self.y,4)
+                #self.punch += 1
+        
+        elif self.bow:
+            if self.left:
+                l_bow.draw(win,int(self.bowCount//7.5),self.x,self.y,4)
+                self.bowCount += 1
+            elif self.right:
+                r_bow.draw(win,int(-self.bowCount//7.5),self.x,self.y,4)
+                self.bowCount += 1
 
 
 
@@ -116,14 +144,30 @@ while run:
         man.left = True
         man.right = False
         man.standing = False
+        man.punch = False
+        man.bow = False
     elif keys[pygame.K_RIGHT] and man.x < W - man.width - man.vel: 
         man.x += man.vel
         man.left = False
         man.right = True
         man.standing = False
+        man.punch = False
+        man.bow = False
+    elif keys[pygame.K_a]:
+        man.punch = True
+        man.bow = False
+        man.standing = False
+    elif keys[pygame.K_s]:
+        man.bow = True
+        man.punch = False
+        man.standing = False
     else:
         man.standing = True
+        man.bow = False
+        man.punch = False
         man.walkCount = 0
+        #man.punchCount = 0
+        #man.kickCount = 0
 
 
 
