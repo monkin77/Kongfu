@@ -111,17 +111,16 @@ class player(object):
         
         elif self.bow:
             if self.left:
-                if self.arrow == True and len(arrows) < 2:
-                    arrows.append(projectiles(self.x-50,self.y-18,-1))
-                else:
+                if self.arrow == True:
+                    arrows.append(projectiles(self.x-70,self.y-15,-1))
                     self.arrow = False
+
                 l_bow.draw(win,int(self.bowCount//15),self.x,self.y,4)
                 #win.blit(l_bow[int(self.bowCount//15)],(self.x-62.5,self.y-60))
                 self.bowCount += 1
             elif self.right:
-                if self.arrow == True and len(arrows) < 2:
-                    arrows.append(projectiles(self.x+50,self.y-18,1))
-                else:
+                if self.arrow == True:
+                    arrows.append(projectiles(self.x+70,self.y-15,1))
                     self.arrow = False
                 r_bow.draw(win,int(-self.bowCount//15),self.x,self.y,4)
                 self.bowCount += 1
