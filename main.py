@@ -11,7 +11,7 @@ pygame.init()
 CLOCK = pygame.time.Clock()
 win = pygame.display.set_mode((W,H))
 pygame.display.set_caption("Kong Fu")
-FPS = 30
+FPS = 60
 
 #Define colors
 BLACK = (0,0,0,255)
@@ -38,15 +38,18 @@ class spritesheet:
     def draw(self, surface, cellIndex, x, y, handle = 0):
         surface.blit(self.sheet, (x+self.handle[handle][0], y+ self.handle[handle][1]), self.cells[cellIndex])
 
-walkRight = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Rwalk2b.png",6,1)
-walkLeft = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Lwalk2b.png",6,1)     #100 X 120 px
-standing = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_standing2.png",1,1)
-background = pygame.image.load("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/wallpaper.gif")
-l_punch = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Lpunchb.png",1,1)
-r_punch = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Rpunchb.png",1,1)
-l_bow = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Lbowb.png",4,1)
-r_bow = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Rbowb.png",4,1)       #corrigir as imagens
-#l_bow = [pygame.image.load("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Lbowb4.png"),pygame.image.load("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Lbowb3.png"),pygame.image.load("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Lbowb2.png"),pygame.image.load("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Lbowb1.png")]
+walkRight = spritesheet("zelda_Rwalk2b.png",6,1)
+walkLeft = spritesheet("zelda_Lwalk2b.png",6,1)     #100 X 120 px
+standing = spritesheet("zelda_standing2.png",1,1)
+background = pygame.image.load("wallpaper.gif")
+l_punch = spritesheet("zelda_Lpunchb.png",1,1)
+r_punch = spritesheet("zelda_Rpunchb.png",1,1)
+l_bow = spritesheet("zelda_Lbowb.png",4,1)
+r_bow = spritesheet("zelda_Rbowb.png",4,1)       #corrigir as imagens
+l_arrow = spritesheet("l_arrow.png",1,1)
+r_arrow = spritesheet("r_arrow.png",1,1)
+#l_bow = [pygame.image.load("zelda_Lbowb4.png"),pygame.image.load("zelda_Lbowb3.png"),pygame.image.load("zelda_Lbowb2.png"),pygame.image.load("zelda_Lbowb1.png")]
+
 
 class player(object):
     def __init__(self,x,y,width,height):
@@ -61,6 +64,7 @@ class player(object):
         self.punch = False  #new
         self.bow = False
         self.bowCount = 0
+        self.arrow = False
         self.walkCount = 0
         #self.punchCount = 0     #new
         #self.kickCount = 0
@@ -71,6 +75,7 @@ class player(object):
         if self.walkCount +1 >= 30:
             self.walkCount = 0
         if self.bowCount +1 >= 60:
+            self.arrow = True
             self.bowCount = 0
         #if self.punchCount +1 >= 30:
          #   self.punchCount = 0
@@ -106,13 +111,32 @@ class player(object):
         
         elif self.bow:
             if self.left:
+                if self.arrow == True and len(arrows) < 2:
+                    arrows.append(projectiles(self.x-50,self.y-18,-1))
+                else:
+                    self.arrow = False
                 l_bow.draw(win,int(self.bowCount//15),self.x,self.y,4)
                 #win.blit(l_bow[int(self.bowCount//15)],(self.x-62.5,self.y-60))
                 self.bowCount += 1
             elif self.right:
+                if self.arrow == True and len(arrows) < 2:
+                    arrows.append(projectiles(self.x+50,self.y-18,1))
+                else:
+                    self.arrow = False
                 r_bow.draw(win,int(-self.bowCount//15),self.x,self.y,4)
                 self.bowCount += 1
 
+class projectiles(object):
+    def __init__(self,x,y,facing):
+        self.x = x
+        self.y = y
+        self.facing = facing
+        self.vel = 10 *facing
+    def draw(self,win):
+        if self.facing == 1:
+            r_arrow.draw(win,0,self.x,self.y,4)
+        elif self.facing == -1:
+            l_arrow.draw(win,0,self.x,self.y,4)
 
 
 def redrawGameWindow():
@@ -121,22 +145,38 @@ def redrawGameWindow():
     pygame.draw.rect(win,(80,30,0), (0,0,W,170))
     pygame.draw.rect(win,(80,30,0), (0,720-147,W,170))
     man.draw(win)
+    for arrow in arrows:
+        arrow.draw(win)
     pygame.display.update()
+
+    
 
 #main loop
 man = player(300,500,100,150)
-
+arrows = []
 
 
 run = True
 
 while run:
     CLOCK.tick(FPS)
-    redrawGameWindow()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+
+    for arrow in arrows:
+        #gotta add stuff enemy colisions
+
+        if arrow.x < W and arrow.x > 0:
+            arrow.x += arrow.vel
+        else:
+            arrows.pop(arrows.index(arrow)) #remove the arrow if it goes outside bounds
+    
+
+
+
+
 
     keys = pygame.key.get_pressed()
     
@@ -162,6 +202,7 @@ while run:
         man.bow = True
         man.punch = False
         man.standing = False
+        
     else:
         man.standing = True
         man.bow = False
@@ -170,11 +211,4 @@ while run:
         #man.punchCount = 0
         #man.kickCount = 0
 
-
-
-    #redrawGameWindow()
-    #s = spritesheet("zelda_Lwalk2.png", 6,1)
-    #s.draw(win, index%s.totalCellCount, HW,400, 4)  #Center handle = 4
-    #index += 1
-    pygame.display.update()
     redrawGameWindow()
