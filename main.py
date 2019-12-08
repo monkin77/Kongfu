@@ -33,21 +33,21 @@ class spritesheet:
         hw,hh = self.cellCenter = (w/2, h/2)
 
         self.cells = list([(index%cols * w,index//cols*h,w,h) for index in range(self.totalCellCount)])
-        self.handle = list ([ (0,0),(-hw,0), (-w,0), (0,-hh), (-hw,-hh), (-w,-hh), (0,-h), (-hw,-h), (-w,-h),])
+        self.handle = list ([ (0,0),(-hw,0),(-w,0), (0,-hh), (-hw,-hh), (-w,-hh), (0,-h), (-hw,-h), (-w,-h),])
 
     def draw(self, surface, cellIndex, x, y, handle = 0):
         surface.blit(self.sheet, (x+self.handle[handle][0], y+ self.handle[handle][1]), self.cells[cellIndex])
 
-walkRight = spritesheet("zelda_Rwalk2b.png",6,1)
-walkLeft = spritesheet("zelda_Lwalk2b.png",6,1)     #100 X 120 px
-standing = spritesheet("zelda_standing2.png",1,1)
-background = pygame.image.load("wallpaper.gif")
-l_punch = spritesheet("zelda_Lpunchb.png",1,1)
-r_punch = spritesheet("zelda_Rpunchb.png",1,1)
-l_bow = spritesheet("zelda_Lbowb.png",4,1)
-r_bow = spritesheet("zelda_Rbowb.png",4,1)       #corrigir as imagens
-l_arrow = spritesheet("l_arrow.png",1,1)
-r_arrow = spritesheet("r_arrow.png",1,1)
+walkRight = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Rwalk2b.png",6,1)
+walkLeft = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Lwalk2b.png",6,1)     #100 X 120 px
+standing = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_standing2.png",1,1)
+background = pygame.image.load("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/wallpaper.gif")
+l_punch = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Lpunchb.png",1,1)
+r_punch = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Rpunchb.png",1,1)
+l_bow = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Lbowb.png",4,1)
+r_bow = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Rbowb.png",4,1)       #corrigir as imagens
+l_arrow = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/l_arrow.png",1,1)
+r_arrow = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/r_arrow.png",1,1)
 #l_bow = [pygame.image.load("zelda_Lbowb4.png"),pygame.image.load("zelda_Lbowb3.png"),pygame.image.load("zelda_Lbowb2.png"),pygame.image.load("zelda_Lbowb1.png")]
 
 
