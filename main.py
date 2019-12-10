@@ -49,7 +49,7 @@ r_bow = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zeld
 l_arrow = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/l_arrow.png",1,1)
 r_arrow = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/r_arrow.png",1,1)
 #l_bow = [pygame.image.load("zelda_Lbowb4.png"),pygame.image.load("zelda_Lbowb3.png"),pygame.image.load("zelda_Lbowb2.png"),pygame.image.load("zelda_Lbowb1.png")]
-
+ghost = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/ghost.gif",1,1)
 
 class player(object):
     def __init__(self,x,y,width,height):
@@ -146,6 +146,7 @@ def redrawGameWindow():
     man.draw(win)
     for arrow in arrows:
         arrow.draw(win)
+    ghost.draw(win,0,300,400,4)
     pygame.display.update()
 
     
