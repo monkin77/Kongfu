@@ -34,11 +34,10 @@ The player takes the role of Keiji Thomas, a man in a Keikogi and slippers. Thom
 
 #### Tarefas
 
-1. Estudo das animações com sprites (70%)
-1. carregar os níveis
-2. desenhar a matriz do nível
-3. ler teclas e mover as peças
+1. Estudo das animações com sprites (100%)
+1. carregar os níveis (100%)
+3. Ler teclas e mover as peças (100%)
 4. Detetar colisões
-5. verificar se jogador chegou ao fim do nível
+5. Adicionar Score, hp bar
 
 #### 18/11/2019
