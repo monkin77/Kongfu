@@ -50,6 +50,33 @@ l_arrow = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/l_
 r_arrow = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/r_arrow.png",1,1)
 #l_bow = [pygame.image.load("zelda_Lbowb4.png"),pygame.image.load("zelda_Lbowb3.png"),pygame.image.load("zelda_Lbowb2.png"),pygame.image.load("zelda_Lbowb1.png")]
 ghost = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/ghost.gif",1,1)
+ 
+
+
+class enemy(object):
+    def __init__(self,x,y,width,height, end):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.end = end
+        self.path = [self.x, self.end]
+        self.walkCount = 0
+        self.vel = 3
+        self.health = 9
+        self.visible = True
+        self.hitbox = (self.x+17,self.y +2, self.width,self.height)
+    
+    def draw(self,win):
+        self.move()
+
+        if self.visible:
+            ghost.draw(win,0, self.x, self.y,4)
+    
+
+    def move(self):
+        pass
+
 
 class player(object):
     def __init__(self,x,y,width,height):
@@ -144,9 +171,10 @@ def redrawGameWindow():
     pygame.draw.rect(win,(80,30,0), (0,0,W,170))
     pygame.draw.rect(win,(80,30,0), (0,720-147,W,170))
     man.draw(win)
+    boo.draw(win)
     for arrow in arrows:
         arrow.draw(win)
-    ghost.draw(win,0,300,400,4)
+    #ghost.draw(win,0,300,400,4)
     pygame.display.update()
 
     
@@ -154,7 +182,7 @@ def redrawGameWindow():
 #main loop
 man = player(300,500,100,150)
 arrows = []
-
+boo = enemy(100,410,64,64,450)
 
 run = True
 
