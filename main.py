@@ -49,7 +49,7 @@ r_bow = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zeld
 l_arrow = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/l_arrow.png",1,1)
 r_arrow = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/r_arrow.png",1,1)
 #l_bow = [pygame.image.load("zelda_Lbowb4.png"),pygame.image.load("zelda_Lbowb3.png"),pygame.image.load("zelda_Lbowb2.png"),pygame.image.load("zelda_Lbowb1.png")]
-ghost = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/ghost.gif",1,1)
+r_ghost = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/r_ghostb.gif",1,1)
  
 
 
@@ -71,7 +71,7 @@ class enemy(object):
         self.move()
 
         if self.visible:
-            ghost.draw(win,0, self.x, self.y,4)
+            r_ghost.draw(win,0, self.x, self.y,4)
     
 
     def move(self):
@@ -182,7 +182,7 @@ def redrawGameWindow():
 #main loop
 man = player(300,500,100,150)
 arrows = []
-boo = enemy(100,410,64,64,450)
+boo = enemy(100,500,64,64,450)
 
 run = True
 
