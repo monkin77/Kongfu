@@ -80,6 +80,8 @@ class enemy(object):
         #pygame.draw.rect(win,(255,0,0),self.hitbox,2)
 
     def move(self):
+        if man.hitbox[0] < self.hitbox[0] < man.hitbox[0] + man.hitbox[2]:
+            self.vel = self.vel * -1
         if self.vel > 0:
             if self.x + self.vel < self.path[1]:
                 self.x += self.vel
@@ -125,6 +127,9 @@ class player(object):
         self.bowCount = 0
         self.arrow = False
         self.walkCount = 0
+        self.visible = True
+        self.health = 10
+        self.hitbox = (self.x-self.width/2,self.y+10-self.height/2,self.width,self.height)
         #self.punchCount = 0     #new
         #self.kickCount = 0
         self.isJump = False
@@ -184,7 +189,12 @@ class player(object):
                 self.bowCount += 1
         self.hitbox = (self.x-self.width/2,self.y+10-self.height/2,self.width,self.height)
         #pygame.draw.rect(win,(255,0,0),self.hitbox,2)
-
+    def hit(self):
+        print("Player hit")
+        if self.health > 0:
+            self.health -= 1
+        else:
+            self.visible = False
 class projectiles(object):
     def __init__(self,x,y,facing):
         self.x = x
@@ -237,17 +247,21 @@ while run:
             arrow.x += arrow.vel
         else:
             arrows.pop(arrows.index(arrow)) #remove the arrow if it goes outside bounds
-    
-    for arrow in arrows:
-        if boo.visible:
+
+    if boo.visible:
+        for arrow in arrows:
             if arrow.hitbox[0] > boo.hitbox[0] and arrow.hitbox[0] < boo.hitbox[0] + boo.hitbox[2]:
                 boo.arrow_hit()
                 arrows.pop(arrows.index(arrow)) #remove the arrow
+    
 
     if boo.visible:
         if man.punch and man.punchCount == 1:
             if man.hitbox[0] >= boo.hitbox[0] and man.hitbox[0] < boo.hitbox[0] + boo.hitbox[2]:
-                boo.punch_hit()       
+                boo.punch_hit()
+        else:
+            if boo.hitbox[0] <= man.hitbox[0] <= boo.hitbox[0] + boo.hitbox[2]:
+                man.hit()        
                 
 
     keys = pygame.key.get_pressed()
