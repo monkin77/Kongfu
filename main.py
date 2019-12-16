@@ -80,8 +80,8 @@ class enemy(object):
         #pygame.draw.rect(win,(255,0,0),self.hitbox,2)
 
     def move(self):
-        if man.hitbox[0] < self.hitbox[0] < man.hitbox[0] + man.hitbox[2]:
-            self.vel = self.vel * -1
+        #if man.hitbox[0] <= self.hitbox[0] <= man.hitbox[0] + man.hitbox[2]:
+        #    self.vel = self.vel * -1
         if self.vel > 0:
             if self.x + self.vel < self.path[1]:
                 self.x += self.vel
@@ -260,8 +260,15 @@ while run:
             if man.hitbox[0] >= boo.hitbox[0] and man.hitbox[0] < boo.hitbox[0] + boo.hitbox[2]:
                 boo.punch_hit()
         else:
-            if boo.hitbox[0] <= man.hitbox[0] <= boo.hitbox[0] + boo.hitbox[2]:
-                man.hit()        
+            if man.left:
+                if boo.hitbox[0] < man.hitbox[0]+12 < boo.hitbox[0] + boo.hitbox[2]:
+                    man.hit()   
+                    boo.vel = boo.vel * -1
+            else:
+                if boo.hitbox[0] < man.hitbox[0]+40 < boo.hitbox[0] + boo.hitbox[2]:    #slight adjustments
+                    man.hit()
+                    boo.vel = boo.vel * -1
+
                 
 
     keys = pygame.key.get_pressed()
