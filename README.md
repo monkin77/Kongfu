@@ -37,7 +37,7 @@ The player takes the role of Keiji Thomas, a man in a Keikogi and slippers. Thom
 1. Estudo das animações com sprites (100%)
 1. carregar os níveis (100%)
 3. Ler teclas e mover as peças (100%)
-4. Detetar colisões
+4. Detetar colisões (100%)
 5. Adicionar Score, hp bar
 
 #### 18/11/2019
