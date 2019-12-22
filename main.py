@@ -37,20 +37,23 @@ class spritesheet:
 
     def draw(self, surface, cellIndex, x, y, handle = 0):
         surface.blit(self.sheet, (x+self.handle[handle][0], y+ self.handle[handle][1]), self.cells[cellIndex])
+        
+#walkRight = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Rwalk2b.png",6,1)
+walkRight = spritesheet("zelda_Rwalk2b.png",6,1)
+walkLeft = spritesheet("zelda_Lwalk2b.png",6,1)     #100 X 120 px
+standing = spritesheet("zelda_standing2.png",1,1)
+background = pygame.image.load("wallpaper.gif")
+l_punch = spritesheet("zelda_Lpunchb.png",1,1)
+r_punch = spritesheet("zelda_Rpunchb.png",1,1)
+l_bow = spritesheet("zelda_Lbowb.png",4,1)
+r_bow = spritesheet("zelda_Rbowb.png",4,1)       #corrigir as imagens
+l_arrow = spritesheet("l_arrow.png",1,1)
+r_arrow = spritesheet("r_arrow.png",1,1)
+r_ghost = spritesheet("r_ghostb.gif",1,1)
+l_ghost = spritesheet("l_ghostb.png",1,1)
+r_koopa = spritesheet("koopas_rightb.gif",3,1)
+l_koopa = spritesheet("koopas_leftb.gif",3,1)
 
-walkRight = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Rwalk2b.png",6,1)
-walkLeft = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Lwalk2b.png",6,1)     #100 X 120 px
-standing = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_standing2.png",1,1)
-background = pygame.image.load("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/wallpaper.gif")
-l_punch = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Lpunchb.png",1,1)
-r_punch = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Rpunchb.png",1,1)
-l_bow = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Lbowb.png",4,1)
-r_bow = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Rbowb.png",4,1)       #corrigir as imagens
-l_arrow = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/l_arrow.png",1,1)
-r_arrow = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/r_arrow.png",1,1)
-#l_bow = [pygame.image.load("zelda_Lbowb4.png"),pygame.image.load("zelda_Lbowb3.png"),pygame.image.load("zelda_Lbowb2.png"),pygame.image.load("zelda_Lbowb1.png")]
-r_ghost = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/r_ghostb.gif",1,1)
-l_ghost = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/l_ghostb.png",1,1)
 
 
 class enemy(object):
@@ -62,37 +65,43 @@ class enemy(object):
         self.end = end
         self.path = [self.x, self.end]
         self.walkCount = 0
-        self.vel = 3
+        if self.path[1] > self.path[0]:
+            self.vel = 3
+        else:
+            self.vel = -3
         self.health = 10
         self.visible = True
         self.hitbox = (self.x+17,self.y +2, self.width,self.height)
     
     def draw(self,win):
         self.move()
-
+        if self.walkCount >= 30:
+            self.walkCount = 0
         if self.visible:
             if self.vel > 0:
-                r_ghost.draw(win,0, self.x, self.y,4)
+                r_koopa.draw(win,self.walkCount // 10,self.x, self.y,4)
+                self.walkCount += 1
             else:
-                l_ghost.draw(win,0, self.x, self.y,4)
+                l_koopa.draw(win,self.walkCount // 10, self.x, self.y,4)
+                self.walkCount += 1
 
-        self.hitbox = (self.x-self.width/2,self.y-self.height/2,self.width,self.height)
-        #pygame.draw.rect(win,(255,0,0),self.hitbox,2)
+        self.hitbox = (self.x-self.width/2+10,self.y-self.height/2,self.width-22,self.height)
+        pygame.draw.rect(win,(255,0,0),self.hitbox,2)
 
     def move(self):
         #if man.hitbox[0] <= self.hitbox[0] <= man.hitbox[0] + man.hitbox[2]:
         #    self.vel = self.vel * -1
         if self.vel > 0:
-            if self.x + self.vel < self.path[1]:
+            if self.x + self.vel < max(self.path[1], self.path[0]):
                 self.x += self.vel
             else:
                 self.vel = self.vel * -1
                 self.x += self.vel
         else:
-            if self.x + self.vel < self.path[0]:
-                self.vel = self.vel * -1
+            if self.x + self.vel > min(self.path[0], self.path[1]):
                 self.x += self.vel
             else:
+                self.vel = self.vel * -1
                 self.x += self.vel
 
     def arrow_hit(self):
@@ -188,7 +197,7 @@ class player(object):
                 r_bow.draw(win,int(-self.bowCount//15),self.x,self.y,4)
                 self.bowCount += 1
         self.hitbox = (self.x-self.width/2,self.y+10-self.height/2,self.width,self.height)
-        #pygame.draw.rect(win,(255,0,0),self.hitbox,2)
+        pygame.draw.rect(win,(255,0,0),self.hitbox,2)
     def hit(self):
         print("Player hit")
         if self.health > 0:
@@ -218,9 +227,10 @@ def redrawGameWindow():
     pygame.draw.rect(win,(80,30,0), (0,0,W,170))
     pygame.draw.rect(win,(80,30,0), (0,720-147,W,170))
     man.draw(win)
-    boo.draw(win)
     for arrow in arrows:
         arrow.draw(win)
+    for enemy in enemies:
+        enemy.draw(win)
     #ghost.draw(win,0,300,400,4)
     pygame.display.update()
 
@@ -229,9 +239,10 @@ def redrawGameWindow():
 #main loop
 man = player(300,500,110,150)   #Check width and height
 arrows = []
-boo = enemy(100,485,90,90,450)
-
+#koopa = enemy(100,500,90,90,450)
+enemies = []
 run = True
+counter = 0
 
 while run:
     CLOCK.tick(FPS)
@@ -248,26 +259,45 @@ while run:
         else:
             arrows.pop(arrows.index(arrow)) #remove the arrow if it goes outside bounds
 
-    if boo.visible:
-        for arrow in arrows:
-            if arrow.hitbox[0] > boo.hitbox[0] and arrow.hitbox[0] < boo.hitbox[0] + boo.hitbox[2]:
-                boo.arrow_hit()
-                arrows.pop(arrows.index(arrow)) #remove the arrow
-    
 
-    if boo.visible:
-        if man.punch and man.punchCount == 1:
-            if man.hitbox[0] >= boo.hitbox[0] and man.hitbox[0] < boo.hitbox[0] + boo.hitbox[2]:
-                boo.punch_hit()
-        else:
-            if man.left:
-                if boo.hitbox[0] < man.hitbox[0]+12 < boo.hitbox[0] + boo.hitbox[2]:
-                    man.hit()   
-                    boo.vel = boo.vel * -1
+    if len(enemies) < 2:
+        pos_x = random.randint(40,930)
+        if counter > 150:
+            counter = 0
+        counter += 1
+        #print(pos_x)
+        if pos_x < 480 and counter == 1:
+            end = pos_x + 400
+            enemies.append(enemy(pos_x,500,90,90,end))
+        elif pos_x >= 480 and counter == 1:
+            end = pos_x - 400
+            enemies.append(enemy(pos_x,500,90,90,end))
+    
+    for koopa in enemies:
+        if koopa.visible:
+            for arrow in arrows:
+                if arrow.hitbox[0] > koopa.hitbox[0] and arrow.hitbox[0] < koopa.hitbox[0] + koopa.hitbox[2]:
+                    koopa.arrow_hit()
+                    if koopa.health <= 0:
+                        del enemies[enemies.index(koopa)]
+                    arrows.pop(arrows.index(arrow)) #remove the arrow
+    
+    for koopa in enemies:
+        if koopa.visible:
+            if man.punch and man.punchCount == 1:
+                if ( koopa.hitbox[0] < man.hitbox[0] < koopa.hitbox[0] + koopa.hitbox[2]) or ( man.hitbox[0] < koopa.hitbox[0] < man.hitbox[0] + man.hitbox[2]):
+                    koopa.punch_hit()
+                    if koopa.health <= 0:
+                        del enemies[enemies.index(koopa)]
             else:
-                if boo.hitbox[0] < man.hitbox[0]+40 < boo.hitbox[0] + boo.hitbox[2]:    #slight adjustments
-                    man.hit()
-                    boo.vel = boo.vel * -1
+                if man.left:
+                    if ( koopa.hitbox[0] < man.hitbox[0] < koopa.hitbox[0] + koopa.hitbox[2]) or ( man.hitbox[0] < koopa.hitbox[0] < man.hitbox[0] + man.hitbox[2]):
+                        man.hit()   
+                        koopa.vel = koopa.vel * -1
+                else:
+                    if ( koopa.hitbox[0] < man.hitbox[0] < koopa.hitbox[0] + koopa.hitbox[2]) or ( man.hitbox[0] < koopa.hitbox[0] < man.hitbox[0] + man.hitbox[2]):    #slight adjustments
+                        man.hit()
+                        koopa.vel = koopa.vel * -1
 
                 
 
