@@ -18,6 +18,7 @@ BLACK = (0,0,0,255)
 WHITE = (255,255,255,255)
 GREEN = (0,255,0,0)
 
+score = 0
 #LOADING SPRITES
 
 class spritesheet:
@@ -39,20 +40,20 @@ class spritesheet:
         surface.blit(self.sheet, (x+self.handle[handle][0], y+ self.handle[handle][1]), self.cells[cellIndex])
         
 #walkRight = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Rwalk2b.png",6,1)
-walkRight = spritesheet("zelda_Rwalk2b.png",6,1)
-walkLeft = spritesheet("zelda_Lwalk2b.png",6,1)     #100 X 120 px
-standing = spritesheet("zelda_standing2.png",1,1)
-background = pygame.image.load("wallpaper.gif")
-l_punch = spritesheet("zelda_Lpunchb.png",1,1)
-r_punch = spritesheet("zelda_Rpunchb.png",1,1)
-l_bow = spritesheet("zelda_Lbowb.png",4,1)
-r_bow = spritesheet("zelda_Rbowb.png",4,1)       #corrigir as imagens
-l_arrow = spritesheet("l_arrow.png",1,1)
-r_arrow = spritesheet("r_arrow.png",1,1)
-r_ghost = spritesheet("r_ghostb.gif",1,1)
-l_ghost = spritesheet("l_ghostb.png",1,1)
-r_koopa = spritesheet("koopas_rightb.gif",3,1)
-l_koopa = spritesheet("koopas_leftb.gif",3,1)
+walkRight = spritesheet("sprites/zelda_Rwalk2b.png",6,1)
+walkLeft = spritesheet("sprites/zelda_Lwalk2b.png",6,1)     #100 X 120 px
+standing = spritesheet("sprites/zelda_standing2.png",1,1)
+background = pygame.image.load("sprites/wallpaper.gif")
+l_punch = spritesheet("sprites/zelda_Lpunchb.png",1,1)
+r_punch = spritesheet("sprites/zelda_Rpunchb.png",1,1)
+l_bow = spritesheet("sprites/zelda_Lbowb.png",4,1)
+r_bow = spritesheet("sprites/zelda_Rbowb.png",4,1)       #corrigir as imagens
+l_arrow = spritesheet("sprites/l_arrow.png",1,1)
+r_arrow = spritesheet("sprites/r_arrow.png",1,1)
+r_ghost = spritesheet("sprites/r_ghostb.gif",1,1)
+l_ghost = spritesheet("sprites/l_ghostb.png",1,1)
+r_koopa = spritesheet("sprites/koopas_rightb.gif",3,1)
+l_koopa = spritesheet("sprites/koopas_leftb.gif",3,1)
 
 
 
@@ -72,6 +73,7 @@ class enemy(object):
         self.health = 10
         self.visible = True
         self.hitbox = (self.x+17,self.y +2, self.width,self.height)
+        self.hp_bar = (self.x-self.width/2+20,self.y-self.height/2-15,50, 12)
     
     def draw(self,win):
         self.move()
@@ -86,7 +88,10 @@ class enemy(object):
                 self.walkCount += 1
 
         self.hitbox = (self.x-self.width/2+10,self.y-self.height/2,self.width-22,self.height)
-        pygame.draw.rect(win,(255,0,0),self.hitbox,2)
+        self.hp_bar = (self.x-self.width/2+20,self.y-self.height/2-15,50, 12)
+        #pygame.draw.rect(win,(255,0,0),self.hitbox)    hitbox
+        pygame.draw.rect(win, (255,0,0), self.hp_bar)   #red hp
+        pygame.draw.rect(win, (0,255,0), (self.hp_bar[0], self.hp_bar[1], 5*self.health, self.hp_bar[3]))   #green hp
 
     def move(self):
         #if man.hitbox[0] <= self.hitbox[0] <= man.hitbox[0] + man.hitbox[2]:
@@ -106,15 +111,20 @@ class enemy(object):
 
     def arrow_hit(self):
         print("arrow hit")
+        global score
         if self.health > 0:
             self.health -= 5
         if self.health <= 0:
+            score += 1
             self.visible = False
     def punch_hit(self):
+        global score
         print("FALCON PUUUUNCH")
         if self.health > 0:
             self.health -= 2.5
+            self.vel *= -1
         if self.health <= 0:
+            score += 1
             self.visible = False
 
 
@@ -138,12 +148,15 @@ class player(object):
         self.walkCount = 0
         self.visible = True
         self.health = 10
-        self.hitbox = (self.x-self.width/2,self.y+10-self.height/2,self.width,self.height)
+        self.hitbox = (self.x-self.width/2,self.y-self.height/2,self.width,self.height)
+        self.hp_bar = (self.x-self.width/2+20,self.y-self.height/2-15,self.width-40, 15)
         #self.punchCount = 0     #new
         #self.kickCount = 0
         self.isJump = False
         self.jumpCount = 10
     def draw(self,win):
+        self.hitbox = (self.x-self.width/2,self.y-self.height/2,self.width,self.height)
+        self.hp_bar = (self.x-self.width/2+20,self.y-self.height/2-15,50, 12)
         if self.walkCount +1 >= 30:
             self.walkCount = 0
         if self.bowCount +1 >= 60:
@@ -195,9 +208,11 @@ class player(object):
                     arrows.append(projectiles(self.x+70,self.y-15,1))
                     self.arrow = False
                 r_bow.draw(win,int(-self.bowCount//15),self.x,self.y,4)
-                self.bowCount += 1
-        self.hitbox = (self.x-self.width/2,self.y+10-self.height/2,self.width,self.height)
-        pygame.draw.rect(win,(255,0,0),self.hitbox,2)
+                self.bowCount += 1 
+        #pygame.draw.rect(win,(255,0,0),self.hitbox,2)          hitbox
+        pygame.draw.rect( win,(255,0,0), self.hp_bar)         #hp rect
+        pygame.draw.rect( win,(0,255,0), (self.hp_bar[0], self.hp_bar[1], 5 * self.health, self.hp_bar[3]))             # green rect hp
+
     def hit(self):
         print("Player hit")
         if self.health > 0:
@@ -226,6 +241,10 @@ def redrawGameWindow():
     win.blit(background,(0,170))
     pygame.draw.rect(win,(80,30,0), (0,0,W,170))
     pygame.draw.rect(win,(80,30,0), (0,720-147,W,170))
+    title = font1.render("Kong Fu", 1, (255,255,255))
+    score_count = font2.render("Score: " + str(score), 1, (255,255,255))
+    win.blit(title,(W/2-100,60))
+    win.blit(score_count, (W-200,120))
     man.draw(win)
     for arrow in arrows:
         arrow.draw(win)
@@ -238,11 +257,15 @@ def redrawGameWindow():
 
 #main loop
 man = player(300,500,110,150)   #Check width and height
+font1 = pygame.font.SysFont('comicsans', 70, False, True) #(font, size, bold, italicized)
+font2 = pygame.font.SysFont('comicsans', 40, True, False) #(font, size, bold, italicized)
 arrows = []
 #koopa = enemy(100,500,90,90,450)
 enemies = []
 run = True
 counter = 0
+hit_count = 0
+
 
 while run:
     CLOCK.tick(FPS)
@@ -260,8 +283,10 @@ while run:
             arrows.pop(arrows.index(arrow)) #remove the arrow if it goes outside bounds
 
 
-    if len(enemies) < 2:
+    if len(enemies) < (score // 5)+1:           # increases the amount of koopas when the score reaches a multiple of 5
         pos_x = random.randint(40,930)
+        while abs(pos_x-man.x) <= 60:
+             pos_x = random.randint(40,930)
         if counter > 150:
             counter = 0
         counter += 1
@@ -285,21 +310,15 @@ while run:
     for koopa in enemies:
         if koopa.visible:
             if man.punch and man.punchCount == 1:
+                #hit_count = 0
                 if ( koopa.hitbox[0] < man.hitbox[0] < koopa.hitbox[0] + koopa.hitbox[2]) or ( man.hitbox[0] < koopa.hitbox[0] < man.hitbox[0] + man.hitbox[2]):
                     koopa.punch_hit()
                     if koopa.health <= 0:
                         del enemies[enemies.index(koopa)]
             else:
-                if man.left:
-                    if ( koopa.hitbox[0] < man.hitbox[0] < koopa.hitbox[0] + koopa.hitbox[2]) or ( man.hitbox[0] < koopa.hitbox[0] < man.hitbox[0] + man.hitbox[2]):
-                        man.hit()   
-                        koopa.vel = koopa.vel * -1
-                else:
-                    if ( koopa.hitbox[0] < man.hitbox[0] < koopa.hitbox[0] + koopa.hitbox[2]) or ( man.hitbox[0] < koopa.hitbox[0] < man.hitbox[0] + man.hitbox[2]):    #slight adjustments
-                        man.hit()
-                        koopa.vel = koopa.vel * -1
-
-                
+                if ( koopa.hitbox[0] < man.hitbox[0]+man.width/2  < koopa.hitbox[0] + koopa.hitbox[2]) or ( man.hitbox[0] < koopa.hitbox[0]+koopa.width/2  < man.hitbox[0] + man.hitbox[2]):    #slight adjustments
+                    man.hit()   
+                    koopa.vel = koopa.vel * -1      
 
     keys = pygame.key.get_pressed()
     
