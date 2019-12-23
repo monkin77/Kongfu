@@ -5,9 +5,8 @@
 
 #### Objetivo
 
-1. Criar um clone do clássico Kong Fu em pygame
+1. Criar um clone do clássico Kong Fu em pygame com algumas ideias originais.
 
-2. Em alternativa... do clássico x em Pygame
 
 #### Repositório de código
 
@@ -38,6 +37,7 @@ The player takes the role of Keiji Thomas, a man in a Keikogi and slippers. Thom
 1. carregar os níveis (100%)
 3. Ler teclas e mover as peças (100%)
 4. Detetar colisões (100%)
-5. Adicionar Score, hp bar
-
+5. Adicionar Score, hp bar (100%)
+6. Adicionar título, background e GameOver screen (66,7%)
+7. Adicionar sound effects (0%)
 #### 18/11/2019
