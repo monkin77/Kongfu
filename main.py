@@ -114,6 +114,10 @@ class enemy(object):
         global score
         if self.health > 0:
             self.health -= 5
+            if man.left:
+                self.x -= 20
+            else:
+                self.x += 20
         if self.health <= 0:
             score += 1
             self.visible = False
@@ -283,7 +287,7 @@ while run:
             arrows.pop(arrows.index(arrow)) #remove the arrow if it goes outside bounds
 
 
-    if len(enemies) < (score // 5)+1:           # increases the amount of koopas when the score reaches a multiple of 5
+    if len(enemies) < (score // 5)+2:           # increases the amount of koopas when the score reaches a multiple of 5
         pos_x = random.randint(40,930)
         while abs(pos_x-man.x) <= 60:
              pos_x = random.randint(40,930)
