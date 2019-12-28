@@ -115,7 +115,7 @@ class enemy(object):
         print("arrow hit")
         global score
         if self.health > 0:
-            self.health -= 5
+            self.health -= 10
             if man.left:
                 self.x -= 20
             else:
@@ -127,7 +127,7 @@ class enemy(object):
         global score
         print("FALCON PUUUUNCH")
         if self.health > 0:
-            self.health -= 2.5
+            self.health -= 5
             self.vel *= -1
         if self.health <= 0:
             score += 1
@@ -223,6 +223,7 @@ class player(object):
         print("Player hit")
         if self.health > 0:
             self.health -= 1
+            self.x = 20
         else:
             self.visible = False
 class projectiles(object):
