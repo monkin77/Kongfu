@@ -56,6 +56,9 @@ r_koopa = spritesheet("sprites/koopas_rightb.gif",3,1)
 l_koopa = spritesheet("sprites/koopas_leftb.gif",3,1)
 l_dragon = pygame.image.load("sprites/l_dragonb.png")
 r_dragon = pygame.image.load("sprites/r_dragonb.png")
+bow_sound = pygame.mixer.Sound("sound/bow_sound.wav")
+bow_hit_sound = pygame.mixer.Sound("sound/bow_hit_sound.wav")
+punch_sound = pygame.mixer.Sound("sound/punch.wav")
 
 
 
@@ -113,6 +116,7 @@ class enemy(object):
 
     def arrow_hit(self):
         print("arrow hit")
+        bow_hit_sound.play()
         global score
         if self.health > 0:
             self.health -= 10
@@ -193,6 +197,7 @@ class player(object):
                     standing.draw(win, 0, self.x,self.y, 4)
 
         elif self.punch:
+            punch_sound.play()
             if self.left:
                 l_punch.draw(win,0,self.x,self.y,4)
                 #self.punch += 1
@@ -201,6 +206,8 @@ class player(object):
                 #self.punch += 1
         
         elif self.bow:
+            if self.bowCount // 15 == 1:
+                bow_sound.play()
             if self.left:
                 if self.arrow == True:
                     arrows.append(projectiles(self.x-70,self.y-15,-1))
@@ -340,7 +347,7 @@ while run:
         man.punch = False
         man.punchCount = 0
         man.bow = False
-    elif keys[pygame.K_RIGHT] and man.x < W - man.width - man.vel: 
+    elif keys[pygame.K_RIGHT] and man.x < W - man.vel - man.width/2: 
         man.x += man.vel
         man.left = False
         man.right = True
