@@ -54,6 +54,8 @@ r_ghost = spritesheet("sprites/r_ghostb.gif",1,1)
 l_ghost = spritesheet("sprites/l_ghostb.png",1,1)
 r_koopa = spritesheet("sprites/koopas_rightb.gif",3,1)
 l_koopa = spritesheet("sprites/koopas_leftb.gif",3,1)
+l_dragon = pygame.image.load("sprites/l_dragonb.png")
+r_dragon = pygame.image.load("sprites/r_dragonb.png")
 
 
 
@@ -245,9 +247,11 @@ def redrawGameWindow():
     win.blit(background,(0,170))
     pygame.draw.rect(win,(80,30,0), (0,0,W,170))
     pygame.draw.rect(win,(80,30,0), (0,720-147,W,170))
-    title = font1.render("Kong Fu", 1, (255,255,255))
+    win.blit(l_dragon,(-10,0))
+    win.blit(r_dragon,(W-110,0))
+    title = font3.render("Kong Fu", 1, (255,255,255))
     score_count = font2.render("Score: " + str(score), 1, (255,255,255))
-    win.blit(title,(W/2-100,60))
+    win.blit(title,(W/2-100,50))
     win.blit(score_count, (W-200,120))
     man.draw(win)
     for arrow in arrows:
@@ -262,7 +266,8 @@ def redrawGameWindow():
 #main loop
 man = player(300,500,110,150)   #Check width and height
 font1 = pygame.font.SysFont('comicsans', 70, False, True) #(font, size, bold, italicized)
-font2 = pygame.font.SysFont('comicsans', 40, True, False) #(font, size, bold, italicized)
+font2 = pygame.font.SysFont('comicsans', 40, False, False) #(font, size, bold, italicized)
+font3 = pygame.font.SysFont('javanesetext', 55, False, False)
 arrows = []
 #koopa = enemy(100,500,90,90,450)
 enemies = []
