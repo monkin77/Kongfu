@@ -40,25 +40,26 @@ class spritesheet:
         surface.blit(self.sheet, (x+self.handle[handle][0], y+ self.handle[handle][1]), self.cells[cellIndex])
         
 #walkRight = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/zelda_Rwalk2b.png",6,1)
-walkRight = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/sprites/zelda_Rwalk2b.png",6,1)
-walkLeft = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/sprites/zelda_Lwalk2b.png",6,1)     #100 X 120 px
-standing = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/sprites/zelda_standing2.png",1,1)
-background = pygame.image.load("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/sprites/wallpaper.gif")
-l_punch = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/sprites/zelda_Lpunchb.png",1,1)
-r_punch = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/sprites/zelda_Rpunchb.png",1,1)
-l_bow = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/sprites/zelda_Lbowb.png",4,1)
-r_bow = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/sprites/zelda_Rbowb.png",4,1)       #corrigir as imagens
-l_arrow = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/sprites/l_arrow.png",1,1)
-r_arrow = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/sprites/r_arrow.png",1,1)
-r_ghost = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/sprites/r_ghostb.gif",1,1)
-l_ghost = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/sprites/l_ghostb.png",1,1)
-r_koopa = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/sprites/koopas_rightb.gif",3,1)
-l_koopa = spritesheet("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/sprites/koopas_leftb.gif",3,1)
-l_dragon = pygame.image.load("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/sprites/l_dragonb.png")
-r_dragon = pygame.image.load("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/sprites/r_dragonb.png")
-bow_sound = pygame.mixer.Sound("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/sound/bow_sound.wav")
-bow_hit_sound = pygame.mixer.Sound("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/sound/bow_hit_sound.wav")
-punch_sound = pygame.mixer.Sound("C:/Users/joaog/OneDrive/Desktop/FEUP/1 ano/fpro/Kongfu/sound/punch.wav")
+walkRight = spritesheet("sprites/zelda_Rwalk2b.png",6,1)
+walkLeft = spritesheet("sprites/zelda_Lwalk2b.png",6,1)     #100 X 120 px
+standing = spritesheet("sprites/zelda_standing2.png",1,1)
+background = pygame.image.load("sprites/wallpaper.gif")
+l_punch = spritesheet("sprites/zelda_Lpunchb.png",1,1)
+r_punch = spritesheet("sprites/zelda_Rpunchb.png",1,1)
+l_bow = spritesheet("sprites/zelda_Lbowb.png",4,1)
+r_bow = spritesheet("sprites/zelda_Rbowb.png",4,1)       #corrigir as imagens
+l_arrow = spritesheet("sprites/l_arrow.png",1,1)
+r_arrow = spritesheet("sprites/r_arrow.png",1,1)
+r_ghost = spritesheet("sprites/r_ghostb.gif",1,1)
+l_ghost = spritesheet("sprites/l_ghostb.png",1,1)
+r_koopa = spritesheet("sprites/koopas_rightb.gif",3,1)
+l_koopa = spritesheet("sprites/koopas_leftb.gif",3,1)
+l_dragon = pygame.image.load("sprites/l_dragonb.png")
+r_dragon = pygame.image.load("sprites/r_dragonb.png")
+bow_sound = pygame.mixer.Sound("sound/bow_sound.wav")
+bow_hit_sound = pygame.mixer.Sound("sound/bow_hit_sound.wav")
+punch_sound = pygame.mixer.Sound("sound/punch.wav")
+game_over = pygame.mixer.Sound("sound/game_over.wav")
 
 
 
@@ -274,6 +275,7 @@ def redrawGameWindow():
         win.fill(BLACK)
         text = font4.render("Game over", 1, (255,0,0))
         win.blit(text, (W/2-340,H/2-150))
+        game_over.play()
         pygame.display.update()
         pygame.time.delay(1000)
     pygame.display.update()
