@@ -157,6 +157,8 @@ class player(object):
         self.bowCount = 0
         self.arrow = False
         self.walkCount = 0
+        self.immortal = False
+        self.immortalCount = 0
         self.visible = True
         self.health = 10
         self.hitbox = (self.x-self.width/2,self.y-self.height/2,self.width,self.height)
@@ -176,28 +178,37 @@ class player(object):
         #if self.punchCount +1 >= 30:
          #   self.punchCount = 0
         
+        if self.immortalCount == 90:
+            self.immortal = False
+
         if not (self.punch) and not(self.bow):      #changes
             if not(self.standing):
                 if self.left:
                     #win.blit(walkLeft[self.walkCount // 5], (self.x,self.y))
                     walkLeft.draw(win, self.walkCount//5, self.x,self.y, 4)  #Center handle = 4
                     self.walkCount += 1
+                    self.immortalCount += 1
                 elif self.right:
                     #win.blit(walkRight[self.walkCount //5], (self.x,self.y))
                     walkRight.draw(win, self.walkCount//5, self.x,self.y, 4)
                     self.walkCount += 1
+                    self.immortalCount += 1
             else:
                 if self.right:
                     #win.blit(walkRight[0],(self.x,self.y))
                     walkRight.draw(win, 0, self.x,self.y, 4)
+                    self.immortalCount += 1
                 elif self.left:
                     #win.blit(walkLeft[5], (self.x,self.y))
                     walkLeft.draw(win, 5, self.x,self.y, 4)
+                    self.immortalCount += 1
                 else:
                     #win.blit(standing, (self.x,self.y))
                     standing.draw(win, 0, self.x,self.y, 4)
+                    self.immortalCount += 1
 
         elif self.punch:
+            self.immortalCount += 1
             punch_sound.play()
             if self.left:
                 l_punch.draw(win,0,self.x,self.y,4)
@@ -207,6 +218,7 @@ class player(object):
                 #self.punch += 1
         
         elif self.bow:
+            self.immortalCount += 1
             if self.bowCount // 15 == 1:
                 bow_sound.play()
             if self.left:
@@ -229,9 +241,11 @@ class player(object):
 
     def hit(self):
         print("Player hit")
-        if self.health > 0:
+        if self.health > 0 and self.immortal == False:
             self.health -= 1
-            self.x = 20
+            self.immortal = True
+            self.immortalCount = 0
+            #self.x = 20
         else:
             self.visible = False
 class projectiles(object):
@@ -384,6 +398,9 @@ while run:
         man.walkCount = 0
         #man.punchCount = 0
         #man.kickCount = 0
+
+    if keys[pygame.K_g]:        #Hotkey to gameOver
+        run = False
 
     if man.health <= 0:
         run = False
