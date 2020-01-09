@@ -13,6 +13,12 @@ win = pygame.display.set_mode((W,H))
 pygame.display.set_caption("Kong Fu")
 FPS = 60
 
+music = pygame.mixer.music.load('sound/background_music.mp3')
+pygame.mixer.music.set_volume(0.3)
+
+pygame.mixer.music.play(-1) # the "-1" will continuously play the music
+
+
 #Define colors
 BLACK = (0,0,0,255)
 WHITE = (255,255,255,255)
@@ -57,6 +63,7 @@ l_koopa = spritesheet("sprites/koopas_leftb.gif",3,1)
 l_dragon = pygame.image.load("sprites/l_dragonb.png")
 r_dragon = pygame.image.load("sprites/r_dragonb.png")
 bow_sound = pygame.mixer.Sound("sound/bow_sound.wav")
+ouch = pygame.mixer.Sound("sound/ouch_sound.wav")
 bow_hit_sound = pygame.mixer.Sound("sound/bow_hit_sound.wav")
 punch_sound = pygame.mixer.Sound("sound/punch.wav")
 game_over = pygame.mixer.Sound("sound/game_over.wav")
@@ -188,7 +195,7 @@ class player(object):
         #if self.punchCount +1 >= 30:
          #   self.punchCount = 0
         
-        if self.immortalCount == 60:
+        if self.immortalCount == 40:
             self.immortal = False
 
         if not (self.punch) and not(self.bow) and not (self.special):      #changes
@@ -224,7 +231,7 @@ class player(object):
                 current = lspecial_sequence[int(self.specialCount // 3)]
                 current.draw(win,0, self.x, self.y,4)
                 if self.specialCount > 8.5:
-                    special_projectile.append(specials(man.x,man.y,-1))
+                    special_projectile.append(specials(man.x+man.width/2,man.y,-1))
                     special_sound.play()
                     self.specialCount = 0
                     self.special = False
@@ -233,7 +240,7 @@ class player(object):
                 current = rspecial_sequence[int(self.specialCount // 3)]
                 current.draw(win,0, self.x, self.y,4)
                 if self.specialCount > 8.5:
-                    special_projectile.append(specials(man.x,man.y,1))
+                    special_projectile.append(specials(man.x+man.width/2,man.y,1))
                     special_sound.play()
                     self.specialCount = 0
                     self.special = False
@@ -277,8 +284,9 @@ class player(object):
         pygame.draw.rect(win, (0,0,0), (100,100,200,20))  
         pygame.draw.rect(win, (0,0,255), (100,100,self.stamina*20,20))  #draw stamina bar
     def hit(self):
-        print("Player hit")
+        #print("Player hit")
         if self.health > 0 and self.immortal == False:
+            ouch.play()
             self.health -= 1
             self.immortal = True
             self.immortalCount = 0
@@ -290,7 +298,7 @@ class projectiles(object):
         self.x = x
         self.y = y
         self.facing = facing
-        self.vel = 7 *facing
+        self.vel = 10 *facing
         self.width = 80
         self.height = 30
     def draw(self,win):
@@ -346,11 +354,12 @@ def redrawGameWindow():
     else:
         pygame.time.delay(100)
         win.fill(BLACK)
-        text = font4.render("Game over", 1, (255,0,0))
-        win.blit(text, (W/2-340,H/2-150))
+        text = font4.render("Game Over", 1, (255,0,0))
+        win.blit(text, (W/2-400,H/2-150))
+        pygame.mixer.music.set_volume(0)
         game_over.play()
         pygame.display.update()
-        pygame.time.delay(1000)
+        pygame.time.delay(2000)
     pygame.display.update()
 
 #main loop
@@ -358,7 +367,7 @@ man = player(300,500,110,150)   #Check width and height
 font1 = pygame.font.SysFont('comicsans', 70, False, True) #(font, size, bold, italicized)
 font2 = pygame.font.SysFont('comicsans', 40, False, False) #(font, size, bold, italicized)
 font3 = pygame.font.SysFont('javanesetext', 55, False, False)
-font4 = pygame.font.SysFont('vivaldi',180, False, False)
+font4 = pygame.font.SysFont('vivaldiitálico',180, False, False)
 font5 = pygame.font.SysFont('couriernew',60, True, False)
 arrows = []
 #koopa = enemy(100,500,90,90,450)
@@ -398,7 +407,7 @@ while run:
         pos_x = random.randint(40,930)
         while abs(pos_x-man.x) <= 60:
              pos_x = random.randint(40,930)
-        if counter > 150:
+        if counter > 100:
             counter = 0
         counter += 1
         #print(pos_x)
@@ -425,7 +434,7 @@ while run:
                         koopa.health = 0
                         if koopa.health <= 0:
                             del enemies[enemies.index(koopa)]
-
+                            score += 1
     for koopa in enemies:
         if koopa.visible:
             if man.punch and man.punchCount == 1:
@@ -490,6 +499,8 @@ while run:
         run = False
     if keys[pygame.K_p]:        #hotkey to full stamina
         man.stamina = 10
+    if keys[pygame.K_b]:        #hotkey to late game
+        score = 30
 
     if man.health <= 0:
         run = False
