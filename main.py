@@ -118,6 +118,8 @@ class enemy(object):
     def arrow_hit(self):
         print("arrow hit")
         bow_hit_sound.play()
+        if man.stamina < 10:
+            man.stamina += 1
         global score
         if self.health > 0:
             self.health -= 10
@@ -130,6 +132,8 @@ class enemy(object):
             self.visible = False
     def punch_hit(self):
         global score
+        if man.stamina < 10:
+            man.stamina += 1
         print("FALCON PUUUUNCH")
         if self.health > 0:
             self.health -= 5
@@ -143,6 +147,7 @@ class enemy(object):
 
 class player(object):
     def __init__(self,x,y,width,height):
+        self.stamina = 0
         self.x = x
         self.y = y
         self.width = width
@@ -178,7 +183,7 @@ class player(object):
         #if self.punchCount +1 >= 30:
          #   self.punchCount = 0
         
-        if self.immortalCount == 90:
+        if self.immortalCount == 60:
             self.immortal = False
 
         if not (self.punch) and not(self.bow):      #changes
@@ -238,7 +243,10 @@ class player(object):
         #pygame.draw.rect(win,(255,0,0),self.hitbox,2)          hitbox
         pygame.draw.rect( win,(255,0,0), self.hp_bar)         #hp rect
         pygame.draw.rect( win,(0,255,0), (self.hp_bar[0], self.hp_bar[1], 5 * self.health, self.hp_bar[3]))             # green rect hp
-
+        if self.stamina == 10:
+            max_warn = font3.render("Max", 1, (255,0,0))
+            win.blit(max_warn, (100+200,70))
+        pygame.draw.rect(win, (0,0,255), (100,100,self.stamina*20,20))
     def hit(self):
         print("Player hit")
         if self.health > 0 and self.immortal == False:
@@ -401,10 +409,12 @@ while run:
 
     if keys[pygame.K_g]:        #Hotkey to gameOver
         run = False
+    if keys[pygame.K_r]:
+        man.stamina = 10
 
     if man.health <= 0:
         run = False
 
     redrawGameWindow()
     
-
+pygame.quit()
