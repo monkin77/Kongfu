@@ -60,8 +60,11 @@ bow_sound = pygame.mixer.Sound("sound/bow_sound.wav")
 bow_hit_sound = pygame.mixer.Sound("sound/bow_hit_sound.wav")
 punch_sound = pygame.mixer.Sound("sound/punch.wav")
 game_over = pygame.mixer.Sound("sound/game_over.wav")
-
-
+rspecial_sequence = [spritesheet("sprites/zelda_rspecial1.png",1,1), spritesheet("sprites/zelda_rspecial2.png",1,1), spritesheet("sprites/zelda_rspecial3.png",1,1)]
+lspecial_sequence = [spritesheet("sprites/zelda_lspecial1.png",1,1), spritesheet("sprites/zelda_lspecial2.png",1,1), spritesheet("sprites/zelda_lspecial3.png",1,1)]
+l_special = spritesheet("sprites/l_special.png",1,1)
+r_special = spritesheet("sprites/r_special.png",1,1)
+special_sound = pygame.mixer.Sound("sound/special_sound.ogg")
 
 class enemy(object):
     def __init__(self,x,y,width,height, end):
@@ -147,7 +150,6 @@ class enemy(object):
 
 class player(object):
     def __init__(self,x,y,width,height):
-        self.stamina = 0
         self.x = x
         self.y = y
         self.width = width
@@ -155,6 +157,9 @@ class player(object):
         self.vel = 5
         self.left = False
         self.right = False
+        self.special = False
+        self.specialCount = 0
+        self.stamina = 0
         self.standing = True
         self.punch = False  #new
         self.punchCount = 0
@@ -186,7 +191,7 @@ class player(object):
         if self.immortalCount == 60:
             self.immortal = False
 
-        if not (self.punch) and not(self.bow):      #changes
+        if not (self.punch) and not(self.bow) and not (self.special):      #changes
             if not(self.standing):
                 if self.left:
                     #win.blit(walkLeft[self.walkCount // 5], (self.x,self.y))
@@ -211,6 +216,28 @@ class player(object):
                     #win.blit(standing, (self.x,self.y))
                     standing.draw(win, 0, self.x,self.y, 4)
                     self.immortalCount += 1
+
+        elif self.special:
+            self.specialCount += 0.4
+
+            if self.left:
+                current = lspecial_sequence[int(self.specialCount // 3)]
+                current.draw(win,0, self.x, self.y,4)
+                if self.specialCount > 8.5:
+                    special_projectile.append(specials(man.x,man.y,-1))
+                    special_sound.play()
+                    self.specialCount = 0
+                    self.special = False
+                    self.stamina = 0
+            elif self.right:
+                current = rspecial_sequence[int(self.specialCount // 3)]
+                current.draw(win,0, self.x, self.y,4)
+                if self.specialCount > 8.5:
+                    special_projectile.append(specials(man.x,man.y,1))
+                    special_sound.play()
+                    self.specialCount = 0
+                    self.special = False
+                    self.stamina = 0
 
         elif self.punch:
             self.immortalCount += 1
@@ -244,8 +271,8 @@ class player(object):
         pygame.draw.rect( win,(255,0,0), self.hp_bar)         #hp rect
         pygame.draw.rect( win,(0,255,0), (self.hp_bar[0], self.hp_bar[1], 5 * self.health, self.hp_bar[3]))             # green rect hp
         if self.stamina == 10:
-            max_warn = font3.render("Max", 1, (255,0,0))
-            win.blit(max_warn, (100+160,20))
+            max_warn = font5.render("Max", 1, (255,0,0))
+            win.blit(max_warn, (100+130,30))
 
         pygame.draw.rect(win, (0,0,0), (100,100,200,20))  
         pygame.draw.rect(win, (0,0,255), (100,100,self.stamina*20,20))  #draw stamina bar
@@ -263,7 +290,7 @@ class projectiles(object):
         self.x = x
         self.y = y
         self.facing = facing
-        self.vel = 10 *facing
+        self.vel = 7 *facing
         self.width = 80
         self.height = 30
     def draw(self,win):
@@ -273,6 +300,26 @@ class projectiles(object):
             l_arrow.draw(win,0,self.x,self.y,4)
         self.hitbox = (self.x-self.width/2,self.y+10-self.height/2,self.width,self.height)
         #pygame.draw.rect(win,(255,0,0),self.hitbox,2)
+
+class specials(object):
+    def __init__(self,x,y,facing):
+        self.x = x
+        self.y = y
+        self.W = 960
+        self.facing = facing
+        self.vel = 10 *facing
+        self.width = 90
+        self.height = 130
+    def draw(self,win):
+            if self.facing == 1:
+                r_special.draw(win,0,self.x,self.y,4)
+                self.x += self.vel
+            elif self.facing == -1:
+                l_special.draw(win,0,self.x,self.y,4)
+                self.x += self.vel
+            
+            self.hitbox = (self.x-self.width/2,self.y+10-self.height/2,self.width,self.height)
+            #pygame.draw.rect(win,(255,0,0),self.hitbox,2)
 
 
 def redrawGameWindow():
@@ -293,6 +340,8 @@ def redrawGameWindow():
             arrow.draw(win)
         for enemy in enemies:
             enemy.draw(win)
+        for special in special_projectile:
+            special.draw(win)
     #ghost.draw(win,0,300,400,4)
     else:
         pygame.time.delay(100)
@@ -310,9 +359,11 @@ font1 = pygame.font.SysFont('comicsans', 70, False, True) #(font, size, bold, it
 font2 = pygame.font.SysFont('comicsans', 40, False, False) #(font, size, bold, italicized)
 font3 = pygame.font.SysFont('javanesetext', 55, False, False)
 font4 = pygame.font.SysFont('vivaldi',180, False, False)
+font5 = pygame.font.SysFont('couriernew',60, True, False)
 arrows = []
 #koopa = enemy(100,500,90,90,450)
 enemies = []
+special_projectile = []
 run = True
 counter = 0
 hit_count = 0
@@ -333,6 +384,14 @@ while run:
             arrow.x += arrow.vel
         else:
             arrows.pop(arrows.index(arrow)) #remove the arrow if it goes outside bounds
+
+    for special in special_projectile:
+            #gotta add stuff enemy colisions
+
+            if special.x < W and special.x > 0:
+                special.x += special.vel
+            else:
+                del special_projectile[0]
 
 
     if len(enemies) < (score // 5)+2:           # increases the amount of koopas when the score reaches a multiple of 5
@@ -358,7 +417,15 @@ while run:
                     if koopa.health <= 0:
                         del enemies[enemies.index(koopa)]
                     arrows.pop(arrows.index(arrow)) #remove the arrow
-    
+    if len(special_projectile) > 0:
+        for koopa in enemies:
+            if koopa.visible:
+                for special in special_projectile:
+                    if special.hitbox[0] > koopa.hitbox[0] and special.hitbox[0] < koopa.hitbox[0] + koopa.hitbox[2]:
+                        koopa.health = 0
+                        if koopa.health <= 0:
+                            del enemies[enemies.index(koopa)]
+
     for koopa in enemies:
         if koopa.visible:
             if man.punch and man.punchCount == 1:
@@ -382,6 +449,7 @@ while run:
         man.punch = False
         man.punchCount = 0
         man.bow = False
+        man.special = False
     elif keys[pygame.K_RIGHT] and man.x < W - man.vel - man.width/2: 
         man.x += man.vel
         man.left = False
@@ -390,16 +458,25 @@ while run:
         man.punch = False
         man.punchCount = 0
         man.bow = False
+        man.special = False
     elif keys[pygame.K_a]:
         man.punchCount += 1
         man.punch = True
         man.bow = False
+        man.special = False
         man.standing = False
     elif keys[pygame.K_s]:
         man.bow = True
+        man.special = False
         man.punch = False
         man.punchCount = 0
         man.standing = False
+    elif keys[pygame.K_r] and man.stamina == 10:
+        man.bow = False
+        man.punch = False
+        man.punchCount = 0
+        man.standing = False
+        man.special = True
     else:
         man.standing = True
         man.bow = False
@@ -411,7 +488,7 @@ while run:
 
     if keys[pygame.K_g]:        #Hotkey to gameOver
         run = False
-    if keys[pygame.K_r]:
+    if keys[pygame.K_p]:        #hotkey to full stamina
         man.stamina = 10
 
     if man.health <= 0:
