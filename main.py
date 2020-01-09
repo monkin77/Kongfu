@@ -287,6 +287,7 @@ class player(object):
         #print("Player hit")
         if self.health > 0 and self.immortal == False:
             ouch.play()
+            koopa.vel *= -1
             self.health -= 1
             self.immortal = True
             self.immortalCount = 0
@@ -446,7 +447,7 @@ while run:
             else:
                 if ( koopa.hitbox[0] < man.hitbox[0]+man.width/2  < koopa.hitbox[0] + koopa.hitbox[2]) or ( man.hitbox[0] < koopa.hitbox[0]+koopa.width/2  < man.hitbox[0] + man.hitbox[2]):    #slight adjustments
                     man.hit()   
-                    koopa.vel = koopa.vel * -1      
+                    #koopa.vel = koopa.vel * -1      
 
     keys = pygame.key.get_pressed()
     
