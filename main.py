@@ -245,8 +245,10 @@ class player(object):
         pygame.draw.rect( win,(0,255,0), (self.hp_bar[0], self.hp_bar[1], 5 * self.health, self.hp_bar[3]))             # green rect hp
         if self.stamina == 10:
             max_warn = font3.render("Max", 1, (255,0,0))
-            win.blit(max_warn, (100+200,70))
-        pygame.draw.rect(win, (0,0,255), (100,100,self.stamina*20,20))
+            win.blit(max_warn, (100+160,20))
+
+        pygame.draw.rect(win, (0,0,0), (100,100,200,20))  
+        pygame.draw.rect(win, (0,0,255), (100,100,self.stamina*20,20))  #draw stamina bar
     def hit(self):
         print("Player hit")
         if self.health > 0 and self.immortal == False:
