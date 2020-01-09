@@ -40,4 +40,5 @@ The player takes the role of Keiji Thomas, a man in a Keikogi and slippers. Thom
 5. Adicionar Score, hp bar (100%)
 6. Adicionar título, background e GameOver screen (100%)
 7. Adicionar sound effects (100%)
+8. Adicionar special attack (100%)
 #### 18/11/2019
