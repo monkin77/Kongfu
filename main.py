@@ -126,7 +126,7 @@ class enemy(object):
                 self.x += self.vel
 
     def arrow_hit(self):
-        print("arrow hit")
+        #print("arrow hit")
         bow_hit_sound.play()
         if man.stamina < 10:
             man.stamina += 1
@@ -144,7 +144,7 @@ class enemy(object):
         global score
         if man.stamina < 10:
             man.stamina += 1
-        print("FALCON PUUUUNCH")
+        #print("FALCON PUUUUNCH")
         if self.health > 0:
             self.health -= 5
             self.vel *= -1
@@ -500,8 +500,8 @@ while run:
         run = False
     if keys[pygame.K_p]:        #hotkey to full stamina
         man.stamina = 10
-    if keys[pygame.K_b]:        #hotkey to late game
-        score = 30
+    if keys[pygame.K_l]:        #hotkey to late game
+        score += 10
 
     if man.health <= 0:
         run = False
