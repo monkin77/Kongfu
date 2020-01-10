@@ -31,6 +31,17 @@ The player takes the role of Keiji Thomas, a man in a Keikogi and slippers. Thom
 
 - Pygame
 
+#### Controlos
+
+  1. Setas - andar
+  2. a - soco
+  3. b - arco e flecha
+  4. r - Ataque especial
+  5. p - Atalho para stamina cheia
+  6. g - Atalho para game over
+  7. l - Atalho para aumentar o score 30 (mais inimigos)
+
+
 #### Tarefas
 
 1. Estudo das animações com sprites (100%)
