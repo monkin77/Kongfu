@@ -25,7 +25,7 @@ The player takes the role of Keiji Thomas, a man in a Keikogi and slippers. Thom
 
 #### UI
 
-![UI](https://github.com/monkin77/Kongfu/blob/master/UI.png)
+![UI](https://github.com/monkin77/Kongfu/sprites/UI.png)
 
 ### Pacotes
 
